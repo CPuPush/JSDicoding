@@ -30,7 +30,7 @@ class whatsApp extends Mail{
         return `my name ${this.username}, is ${this.isBussinessAccount ? 'Bussiness' : 'Personal'}`
     }
 }
-const wa1 = new whatsApp(080808080);
+const wa1 = new whatsApp(0808080);
 console.log(wa1.myProfile());
 console.log(wa1.sendMessage('nobody', 'kings@dicoding'));
 console.log(wa1.showAllContacts());
