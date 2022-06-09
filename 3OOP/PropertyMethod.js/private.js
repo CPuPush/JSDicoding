@@ -1,4 +1,3 @@
-
 this._contacts = []
 // contoh
 class Mail {
