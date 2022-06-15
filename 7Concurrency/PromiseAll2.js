@@ -15,5 +15,11 @@ const grindCoffeeBeans = () =>{
         },1000)
     });
 }
-
+const promises = [boilWater(), grindCoffeeBeans()];
+Promise.all(promises)
+    .then(resolvedValue=>{
+        console.log(resolvedValue);
+    });
 //keduanya dapat berjalan bersamaan. kita dapat memanfaatkan Promise.all()
+
+

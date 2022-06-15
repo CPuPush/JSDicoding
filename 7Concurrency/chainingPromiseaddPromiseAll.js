@@ -1,10 +1,5 @@
-/*
-//!Chaining Promise
-Kita sudah tahu buruknya penulisan callback hell. Namun, kita tidak dapat menghindari 
-keadaan di mana proses asynchronous saling bergantung satu sama lain.
-Untuk menghindari callback hell, salah satu solusinya adalah Promise.
-
-*/
+//!Chaining X Promise All
+//?yang perlu diperhatikan ketika menggunakan promise all, setTimeout yang terlama, itulah yang digunakan
 //state
 
 const state={
@@ -14,11 +9,7 @@ const state={
     },
     isCoffeeMachineBusy:false
 };
-/**
- * pertama mesin mengecek status ketersediaan, jika mesin kopi tidak sibuk, maka promuse akan mengembalikan status
- * resolve("Mesin Kopi siap digunakan"). namun jika status mesin masih sibuk, maka akan dikembalikan adalah status 
- * reject("Maaf mesin sedang sibuk")
- */
+
 
 //checkAvailability
 const checkAvailability=()=>{
@@ -47,6 +38,27 @@ const checkStock = ()=>{
         },1500)
     });
 }
+
+//fungsi promise memasakan air
+const boilWater = ()=>{
+    return new Promise((resolve, reject)=>{
+        console.log(("Memanaskan air"));
+        setTimeout(()=>{
+            resolve("Air panas sudah siap!");
+        },2000)
+    })
+}
+
+//fungsi promise grindCoffee
+const grindCoffeeBeans = ()=>{
+    return new Promise((resolve, reject)=>{
+        console.log("menggiling biji kopi");
+        setTimeout(()=>{
+            resolve("Kopi sudah siap")
+        },1000);
+    });
+}
+
 //fungsi mencampur kopi dan iaru lalu menghidangkannya ke dalam gelas.
 //fungsi ini mengembalikan promise dengan status resolve yang membawa nilai "Kopi sudah siap!"
 
@@ -60,17 +72,27 @@ const brewCoffee = () =>{
 }
 
 function makeExpresso(){
+    //cek ketersediaan
     checkAvailability()
         .then((value)=>{
             console.log(value);
             return checkStock();
         })
+    //memasak air dan menggiling kopi
+    .then((value)=>{
+        console.log(value);
+        // return brewCoffee();
+        const promises = [boilWater(), grindCoffeeBeans()];
+        return Promise.all(promises);
+
+    })
     .then((value)=>{
         console.log(value);
         return brewCoffee();
     })
     .then((value)=>{
         console.log(value);
+        state.isCoffeeMachineBusy = false;
     })
     //catch menangkap semua reject reasoon tanpa harus membuat lagi then(handleFailure)
     .catch((rejectedReason)=>{
@@ -78,14 +100,3 @@ function makeExpresso(){
     });
 }
 makeExpresso();
-/*
-“Untuk membuat espresso lakukan pengecekan ketersediaan mesin, kemudian periksa stok di dalam mesin, kemudian buat kopi.”
-
-//?Apabila promise mengalami kegagalan (reject), ia akan ditangani oleh method catch() yang kita tuliskan di akhir. 
-//?Entah itu disebabkan karena mesin kopi sedang sibuk atau stok bahannya habis.
- */
-/**
- * //*Method .catch() mirip seperti .then(). Namun, method ini hanya menerima satu parameter 
- * //*function yang digunakan untuk rejected handler. Method catch() ini akan terpanggil 
- * //*ketika objek promise memiliki kondisi onRejected. Berikut contoh penggunaan method
- */
