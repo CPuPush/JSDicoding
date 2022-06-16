@@ -1,3 +1,2 @@
-# JavaScript Fundamental
-From DICODING<br></br>
-First Step to JavaScript Expert
+# JavaScript
+<h1>Back-End Developer Learning Path from Dicoding</h1>
