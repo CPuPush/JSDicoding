@@ -8,3 +8,4 @@ function findMax(a, b, c) {
         return c;
     }
 }
+module.exports = {findMax};
